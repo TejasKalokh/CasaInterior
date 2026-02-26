@@ -32,6 +32,8 @@ COPY --from=builder /app/target/casa-interior-backend-*.jar app.jar
 
 USER casauser
 
+ENV SPRING_PROFILES_ACTIVE=production
+
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
