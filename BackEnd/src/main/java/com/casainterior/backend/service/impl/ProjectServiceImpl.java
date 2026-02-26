@@ -14,6 +14,9 @@ import com.casainterior.backend.repository.ProjectRepository;
 import com.casainterior.backend.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "projects", key = "#status + '_' + #pageable.pageNumber + '_' + #pageable.pageSize")
     public Page<ProjectListResponse> findByStatus(ProjectStatus status, Pageable pageable) {
         return projectRepository.findByStatus(status, pageable)
                 .map(projectMapper::toListResponse);
@@ -50,12 +54,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "projectDetail", key = "#id")
     public ProjectResponse findById(Long id) {
-        Project project = findProjectById(id);
+        Project project = projectRepository.findByIdWithTeamMembers(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project", "id", id));
         return projectMapper.toResponse(project);
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "projects", allEntries = true),
+            @CacheEvict(value = "projectDetail", allEntries = true)
+    })
     public ProjectResponse create(ProjectRequest request) {
         Project project = projectMapper.toEntity(request);
 
@@ -74,6 +84,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "projects", allEntries = true),
+            @CacheEvict(value = "projectDetail", key = "#id")
+    })
     public ProjectResponse update(Long id, ProjectRequest request) {
         Project project = findProjectById(id);
 
@@ -95,6 +109,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "projects", allEntries = true),
+            @CacheEvict(value = "projectDetail", key = "#id")
+    })
     public ProjectResponse updateStatus(Long id, ProjectStatus newStatus) {
         Project project = findProjectById(id);
         ProjectStatus oldStatus = project.getStatus();
@@ -115,6 +133,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "projects", allEntries = true),
+            @CacheEvict(value = "projectDetail", key = "#id")
+    })
     public void delete(Long id) {
         Project project = findProjectById(id);
         projectRepository.delete(project);

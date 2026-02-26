@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,13 +33,17 @@ public class ProjectPublicController {
     public ResponseEntity<ApiResponse<Page<ProjectListResponse>>> getPublishedProjects(
             @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<ProjectListResponse> projects = projectService.findByStatus(ProjectStatus.PUBLISHED, pageable);
-        return ResponseEntity.ok(ApiResponse.success(projects));
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
+                .body(ApiResponse.success(projects));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a single published project by id")
     public ResponseEntity<ApiResponse<ProjectResponse>> getProjectById(@PathVariable Long id) {
         ProjectResponse project = projectService.findById(id);
-        return ResponseEntity.ok(ApiResponse.success(project));
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
+                .body(ApiResponse.success(project));
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,8 @@ public class ReviewPublicController {
     public ResponseEntity<ApiResponse<Page<ReviewResponse>>> getActiveReviews(
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<ReviewResponse> reviews = reviewService.findActiveReviews(pageable);
-        return ResponseEntity.ok(ApiResponse.success(reviews));
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(60, java.util.concurrent.TimeUnit.SECONDS).cachePublic())
+                .body(ApiResponse.success(reviews));
     }
 }

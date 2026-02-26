@@ -9,6 +9,8 @@ import com.casainterior.backend.repository.ReviewRepository;
 import com.casainterior.backend.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "reviews", key = "#pageable.pageNumber + '_' + #pageable.pageSize")
     public Page<ReviewResponse> findActiveReviews(Pageable pageable) {
         return reviewRepository.findByActiveTrue(pageable)
                 .map(reviewMapper::toResponse);
@@ -51,6 +54,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheEvict(value = "reviews", allEntries = true)
     public ReviewResponse create(ReviewRequest request) {
         Review review = reviewMapper.toEntity(request);
         Review saved = reviewRepository.save(review);
@@ -59,6 +63,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheEvict(value = "reviews", allEntries = true)
     public ReviewResponse update(Long id, ReviewRequest request) {
         Review review = findReviewById(id);
         reviewMapper.updateEntity(review, request);
@@ -68,6 +73,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheEvict(value = "reviews", allEntries = true)
     public ReviewResponse toggleActive(Long id) {
         Review review = findReviewById(id);
         review.setActive(!review.getActive());
@@ -77,6 +83,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @CacheEvict(value = "reviews", allEntries = true)
     public void delete(Long id) {
         Review review = findReviewById(id);
         reviewRepository.delete(review);
