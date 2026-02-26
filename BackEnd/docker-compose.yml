@@ -53,7 +53,7 @@ services:
       # CORS
       CORS_ORIGINS: ${CORS_ORIGINS}
       # Spring Profile — "docker" enables Swagger + healthcheck actuator
-      SPRING_PROFILES_ACTIVE: docker
+      SPRING_PROFILES_ACTIVE: production
     ports:
       - "8080:8080"
     volumes:
