@@ -1,5 +1,6 @@
 package com.casainterior.backend.entity;
 
+import com.casainterior.backend.converter.AdminRoleConverter;
 import com.casainterior.backend.enums.AdminRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,7 +44,7 @@ public class AdminUser implements UserDetails {
      * Role stored as VARCHAR(20).
      * MAIN_ADMIN has access to Settings; ADMIN has standard access.
      */
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = AdminRoleConverter.class)
     @Column(nullable = false, length = 20)
     @Builder.Default
     private AdminRole role = AdminRole.ADMIN;
