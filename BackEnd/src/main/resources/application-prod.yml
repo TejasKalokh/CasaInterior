@@ -3,8 +3,6 @@
 # Active when: SPRING_PROFILES_ACTIVE=prod  (set by Dockerfile)
 # ============================================================
 
-spring:
-
   # ── Datasource ─────────────────────────────────────────────
   spring:
   datasource:
