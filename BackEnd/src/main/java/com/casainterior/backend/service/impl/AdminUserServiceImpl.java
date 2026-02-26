@@ -57,7 +57,7 @@ public class AdminUserServiceImpl implements AdminUserService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(AdminRole.ADMIN) // New admins always start as ADMIN
+                .role(request.getRole() != null ? request.getRole() : AdminRole.ADMIN)
                 .build();
 
         AdminUser saved = adminUserRepository.save(user);

@@ -1,5 +1,6 @@
 package com.casainterior.backend.dto.admin;
 
+import com.casainterior.backend.enums.AdminRole;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -21,4 +22,10 @@ public class AdminUserRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
+
+    /**
+     * Role to assign to the new admin. Defaults to ADMIN if not provided.
+     * Only a MAIN_ADMIN can create another MAIN_ADMIN via the Settings page.
+     */
+    private AdminRole role = AdminRole.ADMIN;
 }
