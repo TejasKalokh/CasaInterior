@@ -1,0 +1,25 @@
+# Casa Interior Backend — .gitignore
+
+# ---- Build output ----
+target/
+*.jar
+*.war
+
+# ---- Maven wrapper cache ----
+.mvn/wrapper/maven-wrapper.jar
+
+# ---- Environment secrets ----
+.env
+
+# ---- IDE files ----
+.idea/
+*.iml
+.vscode/
+*.class
+
+# ---- Uploaded media (local dev only) ----
+media/
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db

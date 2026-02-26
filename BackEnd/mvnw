@@ -1,0 +1,13 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Maven Wrapper startup script for POSIX systems
+# ----------------------------------------------------------------------------
+set -e
+MAVEN_WRAPPER_PROPERTIES_PATH=".mvn/wrapper/maven-wrapper.properties"
+MAVEN_HOME="${MAVEN_USER_HOME:-$HOME/.m2}"
+
+if [ -f "$MAVEN_WRAPPER_PROPERTIES_PATH" ]; then
+  DISTRIBUTION_URL=$(grep "distributionUrl" "$MAVEN_WRAPPER_PROPERTIES_PATH" | cut -d'=' -f2)
+fi
+
+exec mvn "$@"

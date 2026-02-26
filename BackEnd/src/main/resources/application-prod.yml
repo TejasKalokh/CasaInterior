@@ -1,0 +1,69 @@
+# ============================================================
+# application-prod.yml — Production Profile
+# Active when: SPRING_PROFILES_ACTIVE=prod  (set by Dockerfile)
+# ============================================================
+
+spring:
+
+  # ── Datasource ─────────────────────────────────────────────
+  datasource:
+    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:casa_interior_db}?useSSL=true&requireSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: CasaHikariPool
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+
+  # ── JPA / Hibernate ────────────────────────────────────────
+  jpa:
+    hibernate:
+      ddl-auto: validate    # Flyway owns schema — Hibernate only validates on startup
+    show-sql: false
+
+  # ── Flyway (explicit in prod — never rely on default) ──────
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false    # Must be false in prod — schema is pre-existing
+
+# ── Web / Error handling ───────────────────────────────────
+server:
+  error:
+    include-stacktrace: never       # Never leak stack traces in HTTP error responses
+    include-message: never          # Never expose raw exception messages
+    include-binding-errors: never
+
+# ── Spring Boot Actuator ───────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health              # Expose ONLY health — no info, metrics, env, etc.
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: never            # Public health endpoint reveals no internals
+  server:
+    port: 8080                       # Same port — Nginx controls external access
+
+# ── Swagger / OpenAPI (disabled in prod) ──────────────────
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+# ── Logging ───────────────────────────────────────────────
+logging:
+  level:
+    root: INFO
+    com.casainterior: INFO
+    org.springframework.security: WARN
+    org.flywaydb: WARN
+    com.zaxxer.hikari: WARN
