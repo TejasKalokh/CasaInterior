@@ -116,9 +116,8 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                     src={project.imageUrl ?? ""}
                     alt={project.title ?? "Project image"}
                     style={{
-                        width: "auto",
+                        width: "100%",
                         height: "auto",
-                        maxWidth: "100%",
                         maxHeight: "80vh",
                         display: "block",
                         objectFit: "contain",
