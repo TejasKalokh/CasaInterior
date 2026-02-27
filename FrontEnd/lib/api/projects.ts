@@ -25,29 +25,12 @@ export interface ProjectData {
 }
 
 function mapListItem(p: ProjectListResponse): ProjectData {
-    // Construct the correct image URL
-    let imageUrl = '/images/placeholder.jpg';
-    
-    if (p.imageUrl) {
-        if (p.imageUrl.startsWith('http')) {
-            // Already a full URL
-            imageUrl = p.imageUrl;
-        } else if (p.imageUrl.startsWith('/media')) {
-            // Backend media file - construct full URL
-            const backendBase = BASE.replace('/api', '');
-            imageUrl = `${backendBase}${p.imageUrl}`;
-            console.log('[mapListItem] Constructed media URL:', imageUrl, 'from', p.imageUrl);
-        } else if (p.imageUrl.startsWith('/')) {
-            // Absolute path - likely Next.js public folder
-            imageUrl = p.imageUrl;
-        } else {
-            // Relative path - prepend slash
-            imageUrl = `/${p.imageUrl}`;
-        }
-    }
-    
-    console.log('[mapListItem] Final image URL for project', p.id, ':', imageUrl);
-    
+    // Use the imageUrl exactly as returned by the backend.
+    // Backend stores paths as /media/images/... which the Next.js rewrite
+    // proxy forwards to the Spring Boot service (see next.config.ts rewrites).
+    // This works correctly in both dev and production.
+    const imageUrl = p.imageUrl || '/images/placeholder.jpg';
+
     return {
         id: p.id.toString(),
         slug: p.id.toString(),          // public detail page uses /projects/[id]
