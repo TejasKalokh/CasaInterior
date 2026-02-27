@@ -102,7 +102,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.3 }}
                 style={{
-                    minWidth: "100%",
+                    width: "100%",
                     overflow: "hidden",
                     marginBottom: "clamp(4rem, 8vw, 6rem)",
                     maxHeight: "80vh",
