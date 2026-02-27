@@ -12,7 +12,8 @@ import java.util.List;
 
 /**
  * JPA entity representing an interior design Project.
- * Projects can be in DRAFT or PUBLISHED state.
+ * Projects default to ARCHIVED when created and can be PUBLISHED to make them
+ * visible to the public.
  * Team members are owned by the project — cascade all, orphan removal.
  */
 @Entity
@@ -73,7 +74,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     @Builder.Default
-    private ProjectStatus status = ProjectStatus.DRAFT;
+    private ProjectStatus status = ProjectStatus.ARCHIVED;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
