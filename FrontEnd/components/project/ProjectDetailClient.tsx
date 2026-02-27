@@ -76,7 +76,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                             </div>
 
                             {/* Project Info Grid */}
-                            <motion.div variants={staggerItem} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem 3rem", alignSelf: "start" }} className="info-grid">
+                            <motion.div variants={staggerItem} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem 3rem", alignSelf: "start", paddingTop: "3.5rem" }} className="info-grid">
                                 {[
                                     { label: "Client", value: project.client },
                                     { label: "Location", value: project.location },
