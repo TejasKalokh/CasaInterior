@@ -162,7 +162,7 @@ export default function AdminProjectsPage() {
                                             >
                                                 <td style={{ padding: "14px 20px" }}>
                                                     {p.imageUrl
-                                                        ? <img src={p.imageUrl.startsWith("http") ? p.imageUrl : p.imageUrl.startsWith("/media") ? `http://localhost:8080${p.imageUrl}` : p.imageUrl} alt={p.title} style={{ width: "60px", height: "44px", objectFit: "cover", borderRadius: "8px" }} />
+                                                        ? <img src={p.imageUrl} alt={p.title} style={{ width: "60px", height: "44px", objectFit: "cover", borderRadius: "8px" }} />
                                                         : <div style={{ width: "60px", height: "44px", borderRadius: "8px", background: "rgb(245 245 245)", display: "flex", alignItems: "center", justifyContent: "center" }}><FolderOpen style={{ width: "20px", height: "20px", color: "rgb(212 212 212)" }} /></div>
                                                     }
                                                 </td>
