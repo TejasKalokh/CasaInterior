@@ -101,14 +101,25 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.3 }}
-                style={{ width: "100%", overflow: "hidden", marginBottom: "clamp(4rem, 8vw, 6rem)" }}
+                style={{
+                    width: "100%",
+                    overflow: "hidden",
+                    marginBottom: "clamp(4rem, 8vw, 6rem)",
+                    maxHeight: "80vh",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#EDE8E0"
+                }}
             >
                 <img
                     src={project.imageUrl ?? ""}
                     alt={project.title ?? "Project image"}
                     style={{
-                        width: "100%",
+                        width: "auto",
                         height: "auto",
+                        maxWidth: "100%",
+                        maxHeight: "80vh",
                         display: "block",
                         objectFit: "contain",
                     }}
