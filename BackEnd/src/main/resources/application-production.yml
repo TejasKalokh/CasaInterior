@@ -63,3 +63,9 @@ logging:
     org.springframework.security: WARN
     org.flywaydb: WARN
     com.zaxxer.hikari: WARN
+
+# ── Application-level overrides ──────────────────────────
+app:
+  cors:
+    allowed-origins: ${CORS_ORIGINS:https://casa-interior-front.vercel.app,https://casainterior.in}
+

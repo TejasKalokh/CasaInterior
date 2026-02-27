@@ -33,7 +33,7 @@ export default function Contact() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/inquiries`, {
+            const res = await fetch('/api/inquiries', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
