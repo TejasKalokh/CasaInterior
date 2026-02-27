@@ -101,15 +101,18 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.3 }}
-                style={{ width: "100%", height: "70vh", position: "relative", overflow: "hidden", marginBottom: "clamp(4rem, 8vw, 6rem)" }}
+                style={{ width: "100%", maxHeight: "80vh", overflow: "hidden", marginBottom: "clamp(4rem, 8vw, 6rem)" }}
             >
-                <div style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundImage: `url('${project.imageUrl ?? ""}')`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center"
-                }} />
+                <img
+                    src={project.imageUrl ?? ""}
+                    alt={project.title ?? "Project image"}
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                        objectFit: "contain",
+                    }}
+                />
             </motion.div>
 
             {/* Challenge & Solution */}
