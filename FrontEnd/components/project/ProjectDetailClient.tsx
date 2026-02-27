@@ -102,13 +102,10 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.3 }}
                 style={{
-                    width: "100%",
+                    width: "100vw",
+                    marginLeft: "calc(50% - 50vw)",
                     overflow: "hidden",
                     marginBottom: "clamp(4rem, 8vw, 6rem)",
-                    maxHeight: "80vh",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                     backgroundColor: "#EDE8E0"
                 }}
             >
@@ -116,11 +113,11 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                     src={project.imageUrl ?? ""}
                     alt={project.title ?? "Project image"}
                     style={{
-                        width: "100%",
+                        width: "100vw",
                         height: "auto",
                         maxHeight: "80vh",
-                        display: "block",
                         objectFit: "contain",
+                        display: "block"
                     }}
                 />
             </motion.div>
