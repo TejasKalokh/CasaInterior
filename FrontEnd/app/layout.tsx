@@ -5,6 +5,7 @@ import { ToastProvider } from "@/context/ToastContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  title: "Casa Interior — Luxury Interior Design Studio",
   description:
     "Luxury interior design studio specializing in premium residential & commercial spaces, custom furniture, and architectural visualization.",
   icons: {
