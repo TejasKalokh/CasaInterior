@@ -87,7 +87,7 @@ export default function Hero() {
                         animate={{ y: "0%", opacity: 1 }}
                         transition={{ duration: 0.7, ease: EASE_EXPO_OUT, delay: 0.2 }}
                     >
-                        Est. 2014 · Interior Excellence
+                        Est. 2018 · Interior Excellence
                     </motion.span>
                 </div>
 
@@ -118,7 +118,7 @@ export default function Hero() {
                         animate={{ y: "0%", opacity: 1 }}
                         transition={{ duration: 0.8, ease: EASE_EXPO_OUT, delay: 1.0 }}
                     >
-                        Award-winning interior design for those who demand the extraordinary.
+                        Interior design for those who demand the extraordinary.
                     </motion.p>
                 </div>
 
