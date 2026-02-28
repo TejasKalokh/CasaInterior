@@ -115,9 +115,6 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 <img
                     src={project.imageUrl ?? ""}
                     alt={project.title ?? "Project image"}
-                    initial={{ scale: 1.12 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 1.8, ease: "easeOut" }}
                     style={{
                         width: "100%",
                         height: "auto",
