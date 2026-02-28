@@ -126,7 +126,7 @@ export default function Footer() {
                 <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem", paddingTop: "2rem" }}>
                                 <p style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.75rem", color: "rgba(247,245,240,0.3)" }}>
                                     © {new Date().getFullYear()} Casa Interior. All rights reserved.
-                                    {" "} | Designed & Built by{" "}
+                                    {" "} | Designed & Developed by{" "}
                                     <a
                                         href="https://www.linkedin.com/in/tejaskalokhe"
                                         target="_blank"
