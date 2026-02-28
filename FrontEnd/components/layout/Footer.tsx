@@ -3,10 +3,32 @@
 import Link from "next/link";
 import { Container, Section } from "@/components/ui/Layout";
 
-const footerLinks: Record<string, string[]> = {
-    Studio: ["About Us", "Philosophy", "Awards", "Careers"],
-    Services: ["Residential", "Commercial", "Furniture Design", "Visualization"],
-    Connect: ["Instagram", "Pinterest", "Behance", "LinkedIn"],
+type FooterLink = {
+    label: string;
+    href: string;
+};
+
+const footerLinks: Record<string, FooterLink[]> = {
+    Studio: [
+        { label: "About Us", href: "/about" },
+        { label: "Philosophy", href: "/philosophy" },
+        { label: "Awards", href: "/awards" },
+        { label: "Careers", href: "/careers" },
+    ],
+
+    Services: [
+        { label: "Residential", href: "/#projects" },
+        { label: "Commercial", href: "/#projects" },
+        { label: "Furniture Design", href: "/#projects" },
+        { label: "Visualization", href: "/#projects" },
+    ],
+
+    Connect: [
+        { label: "Instagram", href: "https://www.instagram.com/casainteriordesign_studio/" },
+        { label: "Pinterest", href: "https://pinterest.com/yourhandle" },
+        { label: "Behance", href: "https://behance.net/yourhandle" },
+        { label: "LinkedIn", href: "https://linkedin.com/company/yourcompany" },
+    ],
 };
 
 export default function Footer() {
@@ -35,13 +57,29 @@ export default function Footer() {
                             <div key={cat}>
                                 <h4 style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#C9A96E", marginBottom: "1.5rem" }}>{cat}</h4>
                                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                                    {links.map((link) => (
-                                        <li key={link}>
-                                            <Link href="#" className="footer-link" style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.875rem", color: "rgba(247,245,240,0.45)", textDecoration: "none", transition: "color 0.3s ease" }}>
-                                                {link}
-                                            </Link>
-                                        </li>
-                                    ))}
+                                    {links.map((link) => {
+                                        const isExternal = link.href.startsWith("http");
+
+                                        return (
+                                        <li key={link.label}>
+                                              <Link
+                                                href={link.href}
+                                                target={isExternal ? "_blank" : "_self"}
+                                                rel={isExternal ? "noopener noreferrer" : undefined}
+                                                className="footer-link"
+                                                style={{
+                                                fontFamily: "var(--font-inter), sans-serif",
+                                                fontSize: "0.875rem",
+                                                color: "rgba(247,245,240,0.45)",
+                                                textDecoration: "none",
+                                                transition: "color 0.3s ease"
+                                        }}
+                                        >
+                {link.label}
+            </Link>
+        </li>
+    );
+})}
                                 </ul>
                             </div>
                         ))}
