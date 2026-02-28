@@ -10,10 +10,11 @@ type FooterLink = {
 
 const footerLinks: Record<string, FooterLink[]> = {
     Studio: [
-        { label: "About Us", href: "/about" },
-        { label: "Philosophy", href: "/philosophy" },
-        { label: "Awards", href: "/awards" },
-        { label: "Careers", href: "/careers" },
+        { label: "About Us", href: "/#about" },
+        { label: "Services", href: "/#services" },
+        { label: "Projects", href: "/#projects" },
+        { label: "Process", href: "/#process" },
+        { label: "Contact", href: "/#contact" },
     ],
 
     Services: [
