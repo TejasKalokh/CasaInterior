@@ -44,7 +44,7 @@ export default function About() {
                         </motion.h2>
 
                         <motion.p variants={staggerItem} style={{ fontFamily: SANS, fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)", color: "#6B6560", lineHeight: "1.8", marginBottom: "2.5rem", maxWidth: "30rem" }}>
-                            Founded in 2018, Casa Interior transforms living and working environments into masterpieces of spatial harmony.
+                            Founded in 2021, Casa Interior transforms living and working environments into masterpieces of spatial harmony.
                             We blend architecture, psychology, and artisanship to craft spaces that feel inevitable — as though they could exist nowhere else.
                         </motion.p>
 
