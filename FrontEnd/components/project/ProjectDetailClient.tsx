@@ -6,7 +6,6 @@ import Link from "next/link";
 import { ProjectResponse } from "@/lib/types";
 import { fadeUp, fadeIn, staggerContainer, staggerItem, viewportSettings } from "@/lib/animations";
 import { Container, Section } from "@/components/ui/Layout";
-import { useScroll, useTransform } from "framer-motion";
 
 interface ProjectDetailClientProps {
     project: ProjectResponse;
@@ -16,8 +15,6 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoSectionRef = useRef<HTMLDivElement>(null);
     const isVideoInView = useInView(videoSectionRef, { once: true, margin: "-100px" });
-    const { scrollY } = useScroll();
-    const y = useTransform(scrollY, [0, 500], [0, 80]);
 
     // Auto-play video when it comes into view
     if (isVideoInView && videoRef.current && videoRef.current.paused) {
@@ -99,7 +96,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 </Container>
             </Section>
 
-            /* {/* Hero Image */}
+            {/* Hero Image */}
             <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -122,63 +119,30 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                         objectFit: "contain",
                         display: "block"
                     }}
+                {/* Depth Gradient */}
+                <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.12) 100%)",
+                      pointerEvents: "none"
+                    }}
                 />
-            </motion.div> */
 
-            {/* Cinematic Hero Image */}
-<motion.div
-  initial={{ scale: 1.08, opacity: 0 }}
-  animate={{ scale: 1, opacity: 1 }}
-  transition={{ duration: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
-  style={{
-    width: "100vw",
-    height: "clamp(420px, 80vh, 900px)",
-    marginLeft: "calc(50% - 50vw)",
-    overflow: "hidden",
-    position: "relative",
-    marginBottom: "clamp(4rem, 8vw, 6rem)",
-    backgroundColor: "#EDE8E0"
-  }}
->
-  <motion.img
-    src={project.imageUrl ?? ""}
-    alt={project.title ?? "Project image"}
-    initial={{ scale: 1.12 }}
-    animate={{ scale: 1 }}
-    transition={{ duration: 1.8, ease: "easeOut" }}
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      objectPosition: "center",
-      y,
-      willChange: "transform"
-    }}
-  />
-
-  {/* Depth Gradient */}
-  <div
-    style={{
-      position: "absolute",
-      inset: 0,
-      background:
-        "linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.12) 100%)",
-      pointerEvents: "none"
-    }}
-  />
-
-  {/* Bottom Fade into next section */}
-  <div
-    style={{
-      position: "absolute",
-      bottom: 0,
-      width: "100%",
-      height: "120px",
-      background:
-        "linear-gradient(to bottom, rgba(237,232,224,0) 0%, #F7F5F0 100%)"
-    }}
-  />
-</motion.div>
+               {/* Bottom Fade into next section */}
+              <div
+                  style={{
+                  position: "absolute",
+                  bottom: 0,
+                  width: "100%",
+                  height: "120px",
+                  background:
+                    "linear-gradient(to bottom, rgba(237,232,224,0) 0%, #F7F5F0 100%)"
+                   }}
+              />
+                />
+            </motion.div> 
 
             {/* Challenge & Solution */}
             <Section style={{ backgroundColor: "#EDE8E0" }}>
