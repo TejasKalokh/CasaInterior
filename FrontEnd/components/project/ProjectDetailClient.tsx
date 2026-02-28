@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ProjectResponse } from "@/lib/types";
 import { fadeUp, fadeIn, staggerContainer, staggerItem, viewportSettings } from "@/lib/animations";
 import { Container, Section } from "@/components/ui/Layout";
+import { useScroll, useTransform } from "framer-motion";
 
 interface ProjectDetailClientProps {
     project: ProjectResponse;
@@ -15,6 +16,8 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoSectionRef = useRef<HTMLDivElement>(null);
     const isVideoInView = useInView(videoSectionRef, { once: true, margin: "-100px" });
+    const { scrollY } = useScroll();
+    const y = useTransform(scrollY, [0, 500], [0, 80]);
 
     // Auto-play video when it comes into view
     if (isVideoInView && videoRef.current && videoRef.current.paused) {
@@ -112,12 +115,16 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 <img
                     src={project.imageUrl ?? ""}
                     alt={project.title ?? "Project image"}
+                    initial={{ scale: 1.12 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 1.8, ease: "easeOut" }}
                     style={{
                         width: "100%",
                         height: "auto",
                         maxHeight: "80vh",
                         objectFit: "contain",
                         display: "block"
+                        willChange: "transform"
                     }}
                 />
 
