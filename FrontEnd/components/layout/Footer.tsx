@@ -33,6 +33,16 @@ const footerLinks: Record<string, FooterLink[]> = {
 };
 
 export default function Footer() {
+    const handleScroll = (id: string) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        el.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    };
+
     return (
         <Section id="footer" style={{ backgroundColor: "#1C1C1E", color: "#F7F5F0", paddingTop: "clamp(3rem, 6vw, 5rem)", paddingBottom: "clamp(2rem, 4vw, 3rem)" }}>
             <Container>
@@ -59,23 +69,47 @@ export default function Footer() {
                                 <h4 style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#C9A96E", marginBottom: "1.5rem" }}>{cat}</h4>
                                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                                     {links.map((link) => {
-                                        const isExternal = link.href.startsWith("http");
+    const isExternal = link.href.startsWith("http");
+    const isAnchor = link.href.startsWith("/#");
 
-                                        return (
-                                        <li key={link.label}>
-                                              <Link
-                                                href={link.href}
-                                                target={isExternal ? "_blank" : "_self"}
-                                                rel={isExternal ? "noopener noreferrer" : undefined}
-                                                className="footer-link"
-                                                style={{
-                                                fontFamily: "var(--font-inter), sans-serif",
-                                                fontSize: "0.875rem",
-                                                color: "rgba(247,245,240,0.45)",
-                                                textDecoration: "none",
-                                                transition: "color 0.3s ease"
-                                        }}
-                                        >
+    if (isAnchor) {
+        const id = link.href.replace("/#", "");
+
+        return (
+            <li key={link.label}>
+                <a
+                    onClick={() => handleScroll(id)}
+                    className="footer-link"
+                    style={{
+                        cursor: "pointer",
+                        fontFamily: "var(--font-inter), sans-serif",
+                        fontSize: "0.875rem",
+                        color: "rgba(247,245,240,0.45)",
+                        textDecoration: "none",
+                        transition: "color 0.3s ease"
+                    }}
+                >
+                    {link.label}
+                </a>
+            </li>
+        );
+    }
+
+    return (
+        <li key={link.label}>
+            <Link
+                href={link.href}
+                target={isExternal ? "_blank" : "_self"}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                className="footer-link"
+                style={{
+                    fontFamily: "var(--font-inter), sans-serif",
+                    fontSize: "0.875rem",
+                    color: "rgba(247,245,240,0.45)",
+                    textDecoration: "none",
+                    transition: "color 0.3s ease"
+                }}
+            >
                 {link.label}
             </Link>
         </li>
