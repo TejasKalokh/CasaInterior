@@ -126,7 +126,20 @@ export default function Footer() {
                 <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem", paddingTop: "2rem" }}>
                                 <p style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.75rem", color: "rgba(247,245,240,0.3)" }}>
                                     © {new Date().getFullYear()} Casa Interior. All rights reserved.
-                                 </p>
+                                    {" "} | Designed & Built by{" "}
+                                    <a
+                                        href="https://www.linkedin.com/in/tejaskalokhe"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            color: "#C9A96E",
+                                            textDecoration: "none",
+                                            marginLeft: "4px"
+                                        }}
+                                    >
+                                        Tejas Kalokhe
+                                    </a>
+                                </p>
                                 <div style={{ display: "flex", gap: "1.5rem" }}>
                                     {["Privacy Policy", "Terms of Service"].map((l) => (
                                         <Link key={l} href="#" className="footer-link" style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.75rem", color: "rgba(247,245,240,0.3)", textDecoration: "none", transition: "color 0.3s ease" }}>
