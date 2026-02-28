@@ -195,7 +195,7 @@ export default function Contact() {
                 </div>
 
                 {/* Studio preview image — full width below grid */}
-                <motion.div
+                {/* <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
@@ -222,7 +222,56 @@ export default function Contact() {
                             textTransform: "uppercase", color: "#C9A96E",
                         }}>Visit our studio →</span>
                     </div>
-                </motion.div>
+                </motion.div> */}
+                <a
+    href="https://www.google.com/maps/dir//FW6M+GFC,%20Pandhari%20Nagar,%20Handewadi,%20Pune,%20Maharashtra%20412308"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ display: "block", textDecoration: "none" }}
+>
+    <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+        viewport={viewportSettings}
+        style={{
+            position: "relative",
+            overflow: "hidden",
+            width: "100%",
+            aspectRatio: "21/9",
+            marginTop: "4rem",
+            borderRadius: "2px",
+            cursor: "pointer"
+        }}
+    >
+        <div style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url('/images/IMG-20251207-WA0029.jpg')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+        }} />
+
+        <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to top, rgba(28,28,30,0.7), transparent)",
+            display: "flex",
+            alignItems: "flex-end",
+            padding: "1.5rem 2rem",
+        }}>
+            <span style={{
+                fontFamily: "var(--font-inter), sans-serif",
+                fontSize: "0.65rem",
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                color: "#C9A96E",
+            }}>
+                Get Directions →
+            </span>
+        </div>
+    </motion.div>
+</a>
             </Container>
             <style>{`
                 @media (max-width: 1023px) { .contact-layout { grid-template-columns: 1fr !important; } }
