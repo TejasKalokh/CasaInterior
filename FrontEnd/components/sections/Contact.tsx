@@ -267,7 +267,7 @@ export default function Contact() {
                 textTransform: "uppercase",
                 color: "#C9A96E",
             }}>
-                Visit Our Studio →
+                Get Directions →
             </span>
         </div>
     </motion.div>
