@@ -87,7 +87,7 @@ export default function Hero() {
                         animate={{ y: "0%", opacity: 1 }}
                         transition={{ duration: 0.7, ease: EASE_EXPO_OUT, delay: 0.2 }}
                     >
-                        Est. 2018 · Interior Excellence
+                        Est. 2022 · Interior Excellence
                     </motion.span>
                 </div>
 
