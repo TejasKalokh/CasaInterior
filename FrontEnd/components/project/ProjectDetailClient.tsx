@@ -124,7 +124,6 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                         maxHeight: "80vh",
                         objectFit: "contain",
                         display: "block"
-                        willChange: "transform"
                     }}
                 />
 
