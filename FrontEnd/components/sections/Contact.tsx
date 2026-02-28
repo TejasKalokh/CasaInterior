@@ -10,13 +10,13 @@ import { staggerContainer, staggerItem, viewportSettings } from "@/lib/animation
 import { Container, Section } from "@/components/ui/Layout";
 
 const contactInfo = [
-    { label: "Studio", value: "14 Design Quarter, Bandra West\nMumbai, Maharashtra 400050" },
-    { label: "Email", value: "hello@casainterior.in" },
-    { label: "Phone", value: "+91 98765 43210" },
+    { label: "Studio", value: "Flat no 106, 1st Floor, Aditya Residency, Handewadi\nPune, Maharashtra 414028" },
+    { label: "Email", value: "casainterior04@gmail.com" },
+    { label: "Phone", value: "+91 9890999689, +91 9860183920" },
     { label: "Hours", value: "Mon–Sat, 10:00 – 19:00 IST" },
 ];
 
-const projectTypes = ["Luxury Residential", "Commercial Space", "Custom Furniture", "Interior Styling", "Consultation Only", "Other"];
+const projectTypes = ["Residential", "Commercial Space", "Custom Furniture", "Interior Styling", "Consultation Only", "Other"];
 
 type FF = { value: string; focused: boolean };
 const ff = (): FF => ({ value: "", focused: false });
