@@ -5,10 +5,12 @@ import { ToastProvider } from "@/context/ToastContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Casa Interior — Luxury Interior Design Studio",
   description:
-    "Award-winning luxury interior design studio specializing in premium residential & commercial spaces, custom furniture, and architectural visualization.",
-  keywords: ["interior design", "luxury", "residential", "commercial", "furniture design", "architectural visualization"],
+    "Luxury interior design studio specializing in premium residential & commercial spaces, custom furniture, and architectural visualization.",
+  icons: {
+    icon: "./logo.png",
+  },
+  keywords: ["interior design", "luxury", "residential", "commercial", "furniture design", "architectural visualization","casa","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization", "office design"],
   authors: [{ name: "Casa Interior Studio" }],
   openGraph: {
     title: "Casa Interior — Luxury Interior Design Studio",
