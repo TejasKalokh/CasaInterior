@@ -209,7 +209,7 @@ export default function Hero() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.4, duration: 0.8, ease: EASE_EXPO_OUT }}
             >
-                {[{ value: "200+", label: "Projects" }, { value: "12", label: "Awards" }, { value: "9", label: "Years" }].map((s) => (
+                {[{ value: "20+", label: "Projects" }, { value: "8", label: "Years" }].map((s) => (
                     <div key={s.label} style={{ padding: "1.25rem 2rem", backdropFilter: "blur(12px)", backgroundColor: "rgba(28,28,30,0.55)", borderLeft: "1px solid rgba(247,245,240,0.08)" }}>
                         <div style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: "1.5rem", color: "#C9A96E" }}>{s.value}</div>
                         <div style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(247,245,240,0.4)", marginTop: "0.25rem" }}>{s.label}</div>
