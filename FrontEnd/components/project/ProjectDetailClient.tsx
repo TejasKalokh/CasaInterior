@@ -104,7 +104,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.3 }}
-                {/* style={{
+                /* style={{
                     width: "100vw",
                     height: "clamp(420px, 80vh, 900px)",
                     marginLeft: "calc(50% - 50vw)",
@@ -112,7 +112,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                     position: "relative",
                     marginBottom: "clamp(4rem, 8vw, 6rem)",
                     backgroundColor: "#EDE8E0"
-                }} */}
+                }} */
                 style={{
                     width: "100%",
                     height: "clamp(420px, 80vh, 900px)",
