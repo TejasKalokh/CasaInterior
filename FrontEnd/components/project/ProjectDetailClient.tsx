@@ -119,29 +119,30 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                         objectFit: "contain",
                         display: "block"
                     }}
-                {/* Depth Gradient */}
-                <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.12) 100%)",
-                      pointerEvents: "none"
-                    }}
                 />
 
-               {/* Bottom Fade into next section */}
+                {/* Depth Gradient */}
               <div
                   style={{
                   position: "absolute",
-                  bottom: 0,
-                  width: "100%",
-                  height: "120px",
+                  inset: 0,
                   background:
-                    "linear-gradient(to bottom, rgba(237,232,224,0) 0%, #F7F5F0 100%)"
-                   }}
+                    "linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.12) 100%)",
+                  pointerEvents: "none"
+                    }}
+               />
+
+              {/* Bottom Fade into next section */}
+             <div
+               style={{
+               position: "absolute",
+               bottom: 0,
+               width: "100%",
+               height: "120px",
+               background:
+                "linear-gradient(to bottom, rgba(237,232,224,0) 0%, #F7F5F0 100%)"
+                    }}
               />
-                />
             </motion.div> 
 
             {/* Challenge & Solution */}
