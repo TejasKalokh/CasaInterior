@@ -6,6 +6,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Casa Interior — Luxury Interior Design Studio",
+  icons: {
+    icon: "/Logo.jpg",
+    shortcut: "/Logo.jpg",
+    apple: "/Logo.jpg",
+  },
   description:
     "Luxury interior design studio specializing in premium residential & commercial spaces, custom furniture, and architectural visualization.",
   keywords: ["interior design", "luxury", "residential", "commercial", "furniture design", "architectural visualization","casa","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization","luxury","interior","design","studio","luxury","residential","commercial","furniture","design","architectural","visualization", "office design"],
@@ -15,6 +20,7 @@ export const metadata: Metadata = {
     description: "Crafting extraordinary spaces that transcend expectations.",
     type: "website",
     locale: "en_US",
+    images: ["/Logo.jpg"],
   },
   twitter: {
     card: "summary_large_image",
