@@ -7,9 +7,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Casa Interior — Luxury Interior Design Studio",
   icons: {
-    icon: "/Logo.jpg",
-    shortcut: "/Logo.jpg",
-    apple: "/Logo.jpg",
+    icon: "/android-chrome-512x512.png",
+    shortcut: "/android-chrome-512x512.png",
+    apple: "/android-chrome-512x512.png",
   },
   description:
     "Luxury interior design studio specializing in premium residential & commercial spaces, custom furniture, and architectural visualization.",
