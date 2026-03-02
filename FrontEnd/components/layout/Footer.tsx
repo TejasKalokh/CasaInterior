@@ -58,7 +58,7 @@ export default function Footer() {
                             Creating spaces that transcend the ordinary. Where architecture meets artistry and luxury is a state of mind.
                         </p>
                         <div style={{ marginTop: "2rem" }}>
-                            <span style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#C9A96E" }}>Excellence since 2014</span>
+                            <span style={{ fontFamily: "var(--font-inter), sans-serif", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#C9A96E" }}>Excellence since 2022</span>
                         </div>
                     </div>
 
