@@ -14,9 +14,14 @@ spring:
 
     hikari:
       pool-name: CasaHikariPool
-      maximum-pool-size: 10
-      minimum-idle: 2
+      maximum-pool-size: 2
+      minimum-idle: 1
       connection-timeout: 30000
+      idle-timeout: 300000
+      max-lifetime: 600000
+
+  main:
+    lazy-initialization: true
 
   jpa:
     hibernate:
@@ -40,7 +45,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health              # Expose ONLY health — no info, metrics, env, etc.
+        include: health,info,metrics  # health = public probe, info+metrics = behind JWT auth
       base-path: /actuator
   endpoint:
     health:
