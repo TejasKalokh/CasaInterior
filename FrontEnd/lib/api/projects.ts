@@ -50,8 +50,7 @@ function mapListItem(p: ProjectListResponse): ProjectData {
 export async function fetchProjects(): Promise<ProjectData[]> {
     try {
         const res = await fetch(`${BASE}/projects?size=50`, {
-            next: { revalidate: 10 }, // Reduced from 60 to 10 seconds for faster updates
-            cache: 'no-store', // Disable caching to always fetch fresh data
+            next: { revalidate: 3600 }, // ISR: re-fetch from backend once per hour
         });
         if (!res.ok) throw new Error('Failed');
         const json: ApiResponse<ApiPage<ProjectListResponse>> = await res.json();
