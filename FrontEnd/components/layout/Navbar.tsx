@@ -27,7 +27,7 @@ export default function Navbar() {
     const { scrollY } = useScroll();
 
     // Check if we're on a light background page (not homepage)
-    const isLightPage = pathname !== '/';
+    const isHomePage = pathname === "/";
 
     useMotionValueEvent(scrollY, "change", (latest) => setScrolled(latest > 60));
 
@@ -58,7 +58,7 @@ export default function Navbar() {
     const [logoHover, setLogoHover] = useState(false);
     
     // Force scrolled state on light pages
-    const isNavbarSolid = scrolled || isLightPage;
+    const isNavbarSolid = !isHomePage || scrolled;
 
     return (
         <>
