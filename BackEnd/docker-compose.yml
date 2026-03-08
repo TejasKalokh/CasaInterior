@@ -52,6 +52,9 @@ services:
       FILE_STORAGE_PATH: /app/media
       # CORS
       CORS_ORIGINS: ${CORS_ORIGINS}
+      # Mail (SMTP)
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
       # Spring Profile — "docker" enables Swagger + healthcheck actuator
       SPRING_PROFILES_ACTIVE: production
     ports:
