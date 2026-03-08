@@ -29,8 +29,6 @@ export default function Navbar() {
     // Check if we're on a light background page (not homepage)
     const isHomePage = pathname === "/" || pathname === "";
 
-    const { scrollY } = useScroll();
-
 useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 60);
 });
