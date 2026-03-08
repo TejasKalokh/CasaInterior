@@ -27,18 +27,13 @@ export default function Navbar() {
     const { scrollY } = useScroll();
 
     // Check if we're on a light background page (not homepage)
-    const isHomePage = pathname === "/";
+    const isHomePage = pathname === "/" || pathname === "";
 
-    useEffect(() => {
-    const handleScroll = () => {
-        setScrolled(window.scrollY > 60);
-    };
+    const { scrollY } = useScroll();
 
-    handleScroll(); // run once on load
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 60);
+});
 
     useEffect(() => {
         document.body.style.overflow = menuOpen ? "hidden" : "";
