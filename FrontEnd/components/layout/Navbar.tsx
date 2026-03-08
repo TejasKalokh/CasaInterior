@@ -33,6 +33,11 @@ useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 60);
 });
 
+    // Also check scroll position on mount (e.g. page refresh while scrolled)
+    useEffect(() => {
+        setScrolled(window.scrollY > 60);
+    }, []);
+
     useEffect(() => {
         document.body.style.overflow = menuOpen ? "hidden" : "";
         return () => { document.body.style.overflow = ""; };
