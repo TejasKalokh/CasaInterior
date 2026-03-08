@@ -37,6 +37,21 @@ spring:
       max-request-size: 12MB
       file-size-threshold: 2MB
 
+  # ============================================================
+  # Mail (SMTP)
+  # ============================================================
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 # ============================================================
 # Application-level settings
 # ============================================================
@@ -51,6 +66,10 @@ app:
       - image/jpeg
       - image/png
       - video/mp4
+
+  mail:
+    from-address: ${MAIL_FROM:${MAIL_USERNAME:noreply@casainterior.in}}
+    from-name: ${MAIL_FROM_NAME:Casa Interior}
 
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:3000}

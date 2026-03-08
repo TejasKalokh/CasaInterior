@@ -16,3 +16,4 @@ spring:
 logging:
   level:
     com.casainterior: DEBUG
+    com.casainterior.backend.service.impl.EmailServiceImpl: DEBUG

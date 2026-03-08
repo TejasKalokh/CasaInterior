@@ -9,6 +9,7 @@ import com.casainterior.backend.exception.ResourceNotFoundException;
 import com.casainterior.backend.mapper.InquiryMapper;
 import com.casainterior.backend.repository.ActivityLogRepository;
 import com.casainterior.backend.repository.InquiryRepository;
+import com.casainterior.backend.service.EmailService;
 import com.casainterior.backend.service.InquiryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class InquiryServiceImpl implements InquiryService {
     private final InquiryRepository inquiryRepository;
     private final ActivityLogRepository activityLogRepository;
     private final InquiryMapper inquiryMapper;
+    private final EmailService emailService;
 
     @Override
     public InquiryResponse submit(InquiryRequest request) {
@@ -42,6 +44,9 @@ public class InquiryServiceImpl implements InquiryService {
                 .type("INQUIRY")
                 .message("New inquiry received from " + saved.getName())
                 .build());
+
+        // Send async confirmation email (fire-and-forget)
+        emailService.sendInquiryConfirmation(saved.getEmail(), saved.getName(), request.getProjectType());
 
         log.info("New inquiry submitted by '{}' ({})", saved.getName(), saved.getEmail());
         return inquiryMapper.toResponse(saved);

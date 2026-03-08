@@ -68,6 +68,7 @@ logging:
     org.springframework.security: WARN
     org.flywaydb: WARN
     com.zaxxer.hikari: WARN
+    com.casainterior.backend.service.impl.EmailServiceImpl: WARN
 
 # ── Application-level overrides ──────────────────────────
 app:
