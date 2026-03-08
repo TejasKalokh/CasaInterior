@@ -33,6 +33,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     @Async("emailExecutor")
     public void sendInquiryConfirmation(String toEmail, String customerName, String projectType) {
+        log.warn("[EMAIL-DIAG] Async email method entered for {}", toEmail);
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -43,11 +44,11 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(buildHtmlBody(customerName, projectType), true);
 
             mailSender.send(message);
-            log.info("Inquiry confirmation email sent to {}", toEmail);
+            log.warn("[EMAIL-DIAG] Inquiry confirmation email SENT to {}", toEmail);
         } catch (MessagingException e) {
-            log.error("Failed to send inquiry confirmation email to {}: {}", toEmail, e.getMessage(), e);
+            log.error("[EMAIL-DIAG] Failed to send email to {}: {}", toEmail, e.getMessage(), e);
         } catch (Exception e) {
-            log.error("Unexpected error sending email to {}: {}", toEmail, e.getMessage(), e);
+            log.error("[EMAIL-DIAG] Unexpected error sending email to {}: {}", toEmail, e.getMessage(), e);
         }
     }
 
