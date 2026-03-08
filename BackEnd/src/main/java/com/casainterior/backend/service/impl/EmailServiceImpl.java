@@ -1,28 +1,34 @@
 package com.casainterior.backend.service.impl;
 
 import com.casainterior.backend.service.EmailService;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 /**
- * Sends branded HTML confirmation emails asynchronously.
- * Failures are logged but never propagated — a failed email must never
- * prevent an inquiry from being saved.
+ * Sends branded HTML confirmation emails via Resend HTTP API.
+ * Uses Java's built-in HttpClient — no external SDK needed.
+ * Failures are logged but never propagated.
  */
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class EmailServiceImpl implements EmailService {
 
-    private final JavaMailSender mailSender;
+    private static final String RESEND_API_URL = "https://api.resend.com/emails";
+    private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(10))
+            .build();
+
+    @Value("${app.mail.resend-api-key}")
+    private String resendApiKey;
 
     @Value("${app.mail.from-address}")
     private String fromAddress;
@@ -33,23 +39,55 @@ public class EmailServiceImpl implements EmailService {
     @Override
     @Async("emailExecutor")
     public void sendInquiryConfirmation(String toEmail, String customerName, String projectType) {
-        log.warn("[EMAIL-DIAG] Async email method entered for {}", toEmail);
+        log.info("Sending inquiry confirmation email to {} via Resend", toEmail);
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            String htmlBody = buildHtmlBody(customerName, projectType);
+            String jsonPayload = buildJsonPayload(toEmail, htmlBody);
 
-            helper.setFrom(fromAddress, fromName);
-            helper.setTo(toEmail);
-            helper.setSubject("Thank You for Your Inquiry — Casa Interior");
-            helper.setText(buildHtmlBody(customerName, projectType), true);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(RESEND_API_URL))
+                    .header("Authorization", "Bearer " + resendApiKey)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+                    .timeout(Duration.ofSeconds(15))
+                    .build();
 
-            mailSender.send(message);
-            log.warn("[EMAIL-DIAG] Inquiry confirmation email SENT to {}", toEmail);
-        } catch (MessagingException e) {
-            log.error("[EMAIL-DIAG] Failed to send email to {}: {}", toEmail, e.getMessage(), e);
+            HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                log.info("Inquiry confirmation email sent to {} — Resend response: {}", toEmail, response.body());
+            } else {
+                log.error("Resend API error (HTTP {}): {}", response.statusCode(), response.body());
+            }
         } catch (Exception e) {
-            log.error("[EMAIL-DIAG] Unexpected error sending email to {}: {}", toEmail, e.getMessage(), e);
+            log.error("Failed to send email to {} via Resend: {}", toEmail, e.getMessage(), e);
         }
+    }
+
+    /**
+     * Build the JSON payload for Resend's POST /emails endpoint.
+     */
+    private String buildJsonPayload(String toEmail, String htmlBody) {
+        // Escape JSON special chars in the HTML body
+        String escapedHtml = htmlBody
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
+
+        return """
+                {
+                  "from": "%s <%s>",
+                  "to": ["%s"],
+                  "subject": "Thank You for Your Inquiry — Casa Interior",
+                  "html": "%s"
+                }
+                """.formatted(
+                escapeJson(fromName),
+                escapeJson(fromAddress),
+                escapeJson(toEmail),
+                escapedHtml);
     }
 
     private String buildHtmlBody(String customerName, String projectType) {
@@ -142,9 +180,6 @@ public class EmailServiceImpl implements EmailService {
                 .formatted(escapeHtml(customerName), projectDetail);
     }
 
-    /**
-     * Basic HTML entity escaping to prevent XSS in email content.
-     */
     private String escapeHtml(String input) {
         if (input == null)
             return "";
@@ -154,5 +189,13 @@ public class EmailServiceImpl implements EmailService {
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
                 .replace("'", "&#39;");
+    }
+
+    private String escapeJson(String input) {
+        if (input == null)
+            return "";
+        return input
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"");
     }
 }

@@ -46,7 +46,6 @@ public class InquiryServiceImpl implements InquiryService {
                 .build());
 
         // Send async confirmation email (fire-and-forget)
-        log.warn("[EMAIL-DIAG] About to trigger confirmation email for '{}' <{}>", saved.getName(), saved.getEmail());
         emailService.sendInquiryConfirmation(saved.getEmail(), saved.getName(), request.getProjectType());
 
         log.info("New inquiry submitted by '{}' ({})", saved.getName(), saved.getEmail());
