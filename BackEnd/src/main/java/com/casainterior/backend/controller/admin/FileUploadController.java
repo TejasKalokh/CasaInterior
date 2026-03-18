@@ -1,5 +1,6 @@
 package com.casainterior.backend.controller.admin;
 
+import com.casainterior.backend.dto.CloudinaryUploadResult;
 import com.casainterior.backend.service.FileStorageService;
 import com.casainterior.backend.util.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,13 +19,13 @@ import java.util.Map;
  * Admin file upload controller.
  *
  * <p>
- * Accepts multipart files and stores them locally.
- * Returns the URL path for the stored file for use in Project imageUrl/videoUrl
- * fields.
+ * Accepts multipart files and uploads them to Cloudinary.
+ * Returns the CDN URL and public ID for use in Project imageUrl/videoUrl
+ * and imagePublicId/videoPublicId fields.
  *
  * <p>
- * Validated content types: image/jpeg, image/png, video/mp4
- * File type errors return HTTP 400 via GlobalExceptionHandler.
+ * Validated content types: image/jpeg, image/png, image/webp, video/mp4
+ * File type and size errors return HTTP 400 via GlobalExceptionHandler.
  */
 @RestController
 @RequestMapping("/api/admin/upload")
@@ -37,20 +38,23 @@ public class FileUploadController {
     private final FileStorageService fileStorageService;
 
     /**
-     * Upload a project image (jpg/png) or video (mp4).
+     * Upload a project image (jpg/png/webp) or video (mp4).
      *
      * @param file the multipart file
-     * @param type "images" or "videos" — determines the storage subdirectory
-     * @return the URL path of the saved file
+     * @param type "images" or "videos" — determines the Cloudinary subfolder
+     * @return the CDN URL and public ID of the uploaded file
      */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Upload a file (image/jpeg, image/png, video/mp4 only)", description = "Returns the URL path. Use this path in Project imageUrl or videoUrl field.")
+    @Operation(summary = "Upload a file (image/jpeg, image/png, image/webp, video/mp4 only)",
+               description = "Returns the Cloudinary URL and public ID. Use these in Project imageUrl/videoUrl and imagePublicId/videoPublicId fields.")
     public ResponseEntity<ApiResponse<Map<String, String>>> uploadFile(
             @RequestPart("file") MultipartFile file,
             @RequestParam(defaultValue = "images") String type) {
-        String storedPath = fileStorageService.store(file, type);
+        CloudinaryUploadResult result = fileStorageService.store(file, type);
         return ResponseEntity.ok(ApiResponse.success(
                 "File uploaded successfully",
-                Map.of("url", storedPath, "type", type)));
+                Map.of("url", result.getUrl(),
+                       "publicId", result.getPublicId(),
+                       "type", type)));
     }
 }

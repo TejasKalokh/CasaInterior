@@ -32,7 +32,9 @@ public class ProjectResponse {
     private String challenge;
     private String solution;
     private String imageUrl;
+    private String imagePublicId;
     private String videoUrl;
+    private String videoPublicId;
     private ProjectStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

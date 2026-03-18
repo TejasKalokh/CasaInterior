@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleFileTooLarge(MaxUploadSizeExceededException ex) {
         log.warn("File upload too large: {}", ex.getMessage());
         return buildResponse(HttpStatus.BAD_REQUEST,
-                "Uploaded file exceeds the maximum allowed size of 50MB", null);
+                "Uploaded file exceeds the maximum allowed size of 10MB", null);
     }
 
     // ============================================================

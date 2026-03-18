@@ -35,7 +35,9 @@ public class ProjectRequest {
     private String challenge;
     private String solution;
     private String imageUrl;
+    private String imagePublicId;
     private String videoUrl;
+    private String videoPublicId;
 
     /** Team members submitted inline with the project */
     @Valid

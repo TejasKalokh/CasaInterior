@@ -64,8 +64,14 @@ public class Project {
     @Column(name = "image_url", length = 500)
     private String imageUrl;
 
+    @Column(name = "image_public_id", length = 500)
+    private String imagePublicId;
+
     @Column(name = "video_url", length = 500)
     private String videoUrl;
+
+    @Column(name = "video_public_id", length = 500)
+    private String videoPublicId;
 
     /**
      * Lifecycle status. Stored as VARCHAR(20) in DB.

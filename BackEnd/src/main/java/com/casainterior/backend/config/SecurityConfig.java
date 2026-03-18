@@ -71,9 +71,6 @@ public class SecurityConfig {
                         // ---- Auth endpoints ----
                         .requestMatchers("/api/auth/login").permitAll()
 
-                        // ---- Public Media Files (images/videos) ----
-                        .requestMatchers("/media/**").permitAll()
-
                         // ---- Public Project API ----
                         .requestMatchers(HttpMethod.GET, "/api/projects", "/api/projects/**").permitAll()
 

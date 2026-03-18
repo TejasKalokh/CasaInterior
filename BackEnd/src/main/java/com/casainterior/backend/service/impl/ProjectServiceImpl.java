@@ -11,6 +11,7 @@ import com.casainterior.backend.exception.ResourceNotFoundException;
 import com.casainterior.backend.mapper.ProjectMapper;
 import com.casainterior.backend.repository.ActivityLogRepository;
 import com.casainterior.backend.repository.ProjectRepository;
+import com.casainterior.backend.service.FileStorageService;
 import com.casainterior.backend.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ActivityLogRepository activityLogRepository;
     private final ProjectMapper projectMapper;
+    private final FileStorageService fileStorageService;
 
     @Override
     @Transactional(readOnly = true)
@@ -91,6 +93,10 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectResponse update(Long id, ProjectRequest request) {
         Project project = findProjectById(id);
 
+        // Delete old Cloudinary assets if URLs are changing
+        deleteOldMediaIfChanged(project.getImagePublicId(), request.getImageUrl(), project.getImageUrl());
+        deleteOldMediaIfChanged(project.getVideoPublicId(), request.getVideoUrl(), project.getVideoUrl());
+
         projectMapper.updateEntity(project, request);
 
         // Replace team members
@@ -139,6 +145,15 @@ public class ProjectServiceImpl implements ProjectService {
     })
     public void delete(Long id) {
         Project project = findProjectById(id);
+
+        // Delete Cloudinary assets before removing DB record
+        if (project.getImagePublicId() != null) {
+            fileStorageService.delete(project.getImagePublicId());
+        }
+        if (project.getVideoPublicId() != null) {
+            fileStorageService.delete(project.getVideoPublicId());
+        }
+
         projectRepository.delete(project);
         log.info("Deleted project id={}", id);
     }
@@ -148,5 +163,15 @@ public class ProjectServiceImpl implements ProjectService {
     private Project findProjectById(Long id) {
         return projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project", "id", id));
+    }
+
+    /**
+     * Deletes the old Cloudinary asset if the URL is changing.
+     */
+    private void deleteOldMediaIfChanged(String oldPublicId, String newUrl, String oldUrl) {
+        if (oldPublicId != null && !oldPublicId.isBlank()
+                && (newUrl == null || !newUrl.equals(oldUrl))) {
+            fileStorageService.delete(oldPublicId);
+        }
     }
 }

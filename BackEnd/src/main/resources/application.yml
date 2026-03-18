@@ -46,10 +46,10 @@ app:
     expiration-ms: 86400000       # 24 hours
 
   file:
-    storage-path: ${FILE_STORAGE_PATH:./media}
     allowed-types:
       - image/jpeg
       - image/png
+      - image/webp
       - video/mp4
 
   mail:

@@ -31,7 +31,9 @@ public class ProjectMapper {
                 .challenge(request.getChallenge())
                 .solution(request.getSolution())
                 .imageUrl(request.getImageUrl())
+                .imagePublicId(request.getImagePublicId())
                 .videoUrl(request.getVideoUrl())
+                .videoPublicId(request.getVideoPublicId())
                 .build();
     }
 
@@ -48,7 +50,9 @@ public class ProjectMapper {
         project.setChallenge(request.getChallenge());
         project.setSolution(request.getSolution());
         project.setImageUrl(request.getImageUrl());
+        project.setImagePublicId(request.getImagePublicId());
         project.setVideoUrl(request.getVideoUrl());
+        project.setVideoPublicId(request.getVideoPublicId());
     }
 
     public ProjectResponse toResponse(Project project) {
@@ -66,7 +70,9 @@ public class ProjectMapper {
                 .challenge(project.getChallenge())
                 .solution(project.getSolution())
                 .imageUrl(project.getImageUrl())
+                .imagePublicId(project.getImagePublicId())
                 .videoUrl(project.getVideoUrl())
+                .videoPublicId(project.getVideoPublicId())
                 .status(project.getStatus())
                 .createdAt(project.getCreatedAt())
                 .updatedAt(project.getUpdatedAt())

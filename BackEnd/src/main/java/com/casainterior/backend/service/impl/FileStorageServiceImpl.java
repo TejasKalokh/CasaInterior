@@ -1,126 +1,124 @@
 package com.casainterior.backend.service.impl;
 
+import com.casainterior.backend.dto.CloudinaryUploadResult;
 import com.casainterior.backend.exception.InvalidFileTypeException;
 import com.casainterior.backend.service.FileStorageService;
-import jakarta.annotation.PostConstruct;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Set;
-import java.util.UUID;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Local disk-based file storage implementation.
+ * Cloudinary-based file storage implementation.
  *
  * <p>
- * Files are saved to {storagePath}/{subDir}/{uuid}.{ext}.
- * The path is returned as a URL the frontend can use:
- * /media/{subDir}/{uuid}.{ext}
+ * Uploads images and videos to Cloudinary CDN.
+ * Uses resource_type "auto" to handle both images and videos.
+ * All files are stored under the "casa-interior" folder.
  *
  * <p>
- * File type validation strictly checks Content-Type (not just file extension).
- * Allowed types: image/jpeg, image/png, video/mp4
+ * Validated content types: image/jpeg, image/png, image/webp, video/mp4.
+ * Max file size: 10 MB.
  */
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class FileStorageServiceImpl implements FileStorageService {
 
-    /**
-     * Strictly validated allowed Content-Types.
-     * Disallows gif, svg, webp, and other formats not explicitly approved.
-     */
-    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
+    private static final List<String> ALLOWED_TYPES = List.of(
             "image/jpeg",
             "image/png",
-            "video/mp4");
+            "image/webp",
+            "video/mp4"
+    );
 
-    @Value("${app.file.storage-path}")
-    private String storagePath;
+    /** 10 MB in bytes */
+    private static final long MAX_FILE_SIZE = 10L * 1024 * 1024;
 
-    private Path rootLocation;
+    private static final String CLOUDINARY_FOLDER = "casa-interior";
 
-    @PostConstruct
-    public void init() {
-        rootLocation = Paths.get(storagePath).toAbsolutePath().normalize();
-        try {
-            Files.createDirectories(rootLocation);
-            log.info("File storage initialized at: {}", rootLocation);
-        } catch (IOException ex) {
-            throw new RuntimeException("Could not initialize file storage at: " + rootLocation, ex);
-        }
-    }
+    private final Cloudinary cloudinary;
 
     @Override
-    public String store(MultipartFile file, String subDir) {
-        // ---- Validate content type ----
-        String contentType = file.getContentType();
-        if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
-            throw new InvalidFileTypeException(contentType != null ? contentType : "unknown");
-        }
-
-        // ---- Validate file is not empty ----
+    public CloudinaryUploadResult store(MultipartFile file, String subDir) {
+        // ---- Validate empty file ----
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Cannot store an empty file");
         }
 
-        // ---- Determine extension from content type ----
-        String extension = switch (contentType) {
-            case "image/jpeg" -> ".jpg";
-            case "image/png" -> ".png";
-            case "video/mp4" -> ".mp4";
-            default -> throw new InvalidFileTypeException(contentType);
-        };
+        // ---- Validate content type ----
+        String contentType = file.getContentType();
+        if (contentType == null || !ALLOWED_TYPES.contains(contentType)) {
+            throw new InvalidFileTypeException(contentType != null ? contentType : "unknown");
+        }
 
-        // ---- Generate unique filename ----
-        String filename = UUID.randomUUID() + extension;
+        // ---- Validate file size (10 MB max) ----
+        if (file.getSize() > MAX_FILE_SIZE) {
+            throw new IllegalArgumentException(
+                    "File too large. Maximum allowed size is 10MB, got " +
+                    (file.getSize() / (1024 * 1024)) + "MB");
+        }
 
-        // ---- Create subdirectory ----
-        Path destinationDir = rootLocation.resolve(subDir).normalize();
+        // ---- Upload to Cloudinary ----
         try {
-            Files.createDirectories(destinationDir);
-            Path destinationFile = destinationDir.resolve(filename);
+            String folder = CLOUDINARY_FOLDER + "/" + subDir;
 
-            // Path traversal guard
-            if (!destinationFile.startsWith(rootLocation)) {
-                throw new SecurityException("Attempted path traversal attack detected");
-            }
+            @SuppressWarnings("unchecked")
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    ObjectUtils.asMap(
+                            "resource_type", "auto",
+                            "folder", folder,
+                            "quality", "auto",
+                            "fetch_format", "auto"
+                    )
+            );
 
-            Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
-            String relativePath = "/media/" + subDir + "/" + filename;
-            log.info("Stored file '{}' -> '{}'", file.getOriginalFilename(), relativePath);
-            return relativePath;
+            String secureUrl = (String) uploadResult.get("secure_url");
+            String publicId = (String) uploadResult.get("public_id");
+
+            log.info("Uploaded '{}' to Cloudinary -> url='{}', publicId='{}'",
+                    file.getOriginalFilename(), secureUrl, publicId);
+
+            return CloudinaryUploadResult.builder()
+                    .url(secureUrl)
+                    .publicId(publicId)
+                    .build();
 
         } catch (IOException ex) {
-            throw new RuntimeException("Failed to store file: " + ex.getMessage(), ex);
+            log.error("Failed to upload file '{}' to Cloudinary: {}",
+                    file.getOriginalFilename(), ex.getMessage());
+            throw new RuntimeException("Failed to upload file to cloud storage: " + ex.getMessage(), ex);
         }
     }
 
     @Override
-    public void delete(String filePath) {
-        if (filePath == null || filePath.isBlank())
+    public void delete(String publicId) {
+        if (publicId == null || publicId.isBlank()) {
             return;
-
-        // Strip leading /media/ prefix to get the filesystem relative path
-        String relativePath = filePath.startsWith("/media/")
-                ? filePath.substring("/media/".length())
-                : filePath;
-
-        Path target = rootLocation.resolve(relativePath).normalize();
+        }
 
         try {
-            if (Files.exists(target)) {
-                Files.delete(target);
-                log.info("Deleted file: {}", target);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> result = cloudinary.uploader().destroy(
+                    publicId,
+                    ObjectUtils.asMap("resource_type", "auto")
+            );
+
+            String status = (String) result.get("result");
+            if ("ok".equals(status)) {
+                log.info("Deleted Cloudinary asset: {}", publicId);
+            } else {
+                log.warn("Cloudinary deletion returned '{}' for publicId: {}", status, publicId);
             }
         } catch (IOException ex) {
-            log.warn("Could not delete file '{}': {}", target, ex.getMessage());
+            log.warn("Could not delete Cloudinary asset '{}': {}", publicId, ex.getMessage());
         }
     }
 }
