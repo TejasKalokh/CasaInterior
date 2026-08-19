@@ -60,7 +60,7 @@ export default function Hero() {
                 display: "flex",
                 alignItems: "flex-end",
                 overflow: "hidden",
-                backgroundColor: "#1C1C1E",
+                backgroundColor: "transparent",
             }}
         >
             {/* Background */}
